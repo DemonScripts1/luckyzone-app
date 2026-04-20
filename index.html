@@ -6,360 +6,264 @@
 <title>Lucky Zone</title>
 
 <style>
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: radial-gradient(circle at top, #0f0f0f, #000);
-    overflow: hidden;
-    color: white;
-  }
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  background: radial-gradient(circle at top, #0b0b0b, #000);
+  color: white;
+}
 
-  canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 0;
-  }
+/* canvas */
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
 
-  /* ===== INTRO ===== */
-  .intro {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 999;
-    animation: fadeOut 2.2s ease forwards;
-    animation-delay: 2s;
-  }
+/* UI */
+header {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 60px 20px;
+}
 
-  .jackpot {
-    font-size: 60px;
-    color: #ffcc00;
-    text-shadow: 0 0 20px #ffcc00, 0 0 40px #ff9900;
-    transform: scale(0);
-    animation: pop 1s ease forwards;
-  }
+h1 {
+  font-size: 52px;
+  color: #ffcc00;
+  text-shadow: 0 0 15px #ffcc00;
+  margin: 0;
+}
 
-  @keyframes pop { to { transform: scale(1); } }
-  @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
+p {
+  opacity: 0.7;
+}
 
-  /* ===== HEADER ===== */
-  header {
-    text-align: center;
-    padding: 60px 20px;
-    position: relative;
-    z-index: 3;
-  }
+.btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 25px;
+  background: linear-gradient(90deg, #ffcc00, #ff9900);
+  color: black;
+  font-weight: bold;
+  border-radius: 10px;
+  text-decoration: none;
+  box-shadow: 0 0 20px #ffcc00;
+}
 
-  h1 {
-    font-size: 52px;
-    color: #ffcc00;
-    text-shadow: 0 0 10px #ffcc00, 0 0 30px #ff9900;
-  }
+/* combo */
+#combo {
+  position: fixed;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 16px;
+  border: 1px solid #ffcc00;
+  color: #ffcc00;
+  background: rgba(0,0,0,0.5);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  z-index: 10;
+  opacity: 0;
+  transition: 0.2s;
+}
 
-  p { opacity: 0.8; }
-
-  .container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-    padding: 20px;
-    position: relative;
-    z-index: 3;
-  }
-
-  .card {
-    width: 260px;
-    padding: 20px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,204,0,0.3);
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 0 20px rgba(255,204,0,0.2);
-  }
-
-  .card:hover {
-    transform: translateY(-6px) scale(1.05);
-  }
-
-  .btn {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 12px 25px;
-    background: linear-gradient(90deg, #ffcc00, #ff9900);
-    color: black;
-    font-weight: bold;
-    border-radius: 10px;
-    text-decoration: none;
-    box-shadow: 0 0 20px #ffcc00;
-  }
-
-  /* ===== COMBO ===== */
-  #streak {
-    position: fixed;
-    top: 18px;
-    left: 50%;
-    transform: translateX(-50%) scale(0.8);
-    padding: 10px 18px;
-    background: rgba(0,0,0,0.6);
-    border: 1px solid #ffcc00;
-    color: #ffcc00;
-    font-weight: bold;
-    border-radius: 12px;
-    backdrop-filter: blur(10px);
-    z-index: 9999;
-    opacity: 0;
-    transition: 0.25s ease;
-    text-shadow: 0 0 10px #ffcc00;
-  }
-
-  #streak.show {
-    opacity: 1;
-    transform: translateX(-50%) scale(1.15);
-  }
-
-  #streak.power {
-    box-shadow: 0 0 20px #ffcc00, 0 0 40px #ff9900;
-    animation: shake 0.25s infinite;
-  }
-
-  @keyframes shake {
-    0% { transform: translateX(-50%) scale(1.15) translateX(0); }
-    25% { transform: translateX(-50%) scale(1.15) translateX(-2px); }
-    50% { transform: translateX(-50%) scale(1.15) translateX(2px); }
-    75% { transform: translateX(-50%) scale(1.15) translateX(-2px); }
-    100% { transform: translateX(-50%) scale(1.15) translateX(0); }
-  }
-
-  /* floating text */
-  .floatText {
-    position: absolute;
-    color: #ffcc00;
-    font-weight: bold;
-    pointer-events: none;
-    animation: floatUp 0.8s ease forwards;
-    text-shadow: 0 0 10px #ffcc00;
-  }
-
-  @keyframes floatUp {
-    0% { opacity: 1; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(-40px); }
-  }
+#combo.show {
+  opacity: 1;
+  transform: translateX(-50%) scale(1.1);
+}
 
 </style>
 </head>
 
 <body>
 
-<div class="intro">
-  <div class="jackpot">JACKPOT!</div>
-</div>
+<canvas id="c"></canvas>
 
-<div id="streak">COMBO x1</div>
-
-<canvas id="bg"></canvas>
-<canvas id="fg"></canvas>
+<div id="combo">COMBO x1</div>
 
 <header>
   <h1>Lucky Zone</h1>
-  <p>Manage & transfer your funds</p>
+  <p>Manage & Transfer Funds Smoothly</p>
 
-  <a class="btn"
-  href="https://github.com/TxDevelopers/luckyzone-app/releases/download/v1.0/Lucky.zone.apk">
-  Download App
+  <a class="btn" href="https://github.com/TxDevelopers/luckyzone-app/releases/download/v1.0/Lucky.zone.apk">
+    Download App
   </a>
 </header>
 
-<div class="container">
-  <div class="card">Fast Transfers</div>
-  <div class="card">Secure System</div>
-  <div class="card">Modern UI</div>
-</div>
-
 <script>
-/* ===== CANVAS ===== */
-const bg = document.getElementById("bg");
-const fg = document.getElementById("fg");
-const bctx = bg.getContext("2d");
-const fctx = fg.getContext("2d");
+const canvas = document.getElementById("c");
+const ctx = canvas.getContext("2d");
 
-bg.width = fg.width = window.innerWidth;
-bg.height = fg.height = window.innerHeight;
+canvas.width = innerWidth;
+canvas.height = innerHeight;
 
-/* ===== BACKGROUND EFFECTS ===== */
+/* ===== SYSTEMS ===== */
+let stars = [];
+let coins = [];
+let particles = [];
+
+let combo = 0;
+let lastClick = 0;
+const comboUI = document.getElementById("combo");
+
+/* ===== BACKGROUND STAR ===== */
 class Star {
-  constructor(){
-    this.x=Math.random()*bg.width;
-    this.y=Math.random()*bg.height;
-    this.vx=-0.2-Math.random()*0.3;
-    this.size=Math.random()*2;
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.speed = 0.3 + Math.random();
+    this.size = Math.random() * 2;
   }
-  update(){
-    this.x+=this.vx;
-    if(this.x<0)this.x=bg.width;
-  }
-  draw(){
-    bctx.fillStyle="white";
-    bctx.globalAlpha=0.6;
-    bctx.beginPath();
-    bctx.arc(this.x,this.y,this.size,0,Math.PI*2);
-    bctx.fill();
-  }
-}
 
-class BGCoin {
-  constructor(){
-    this.x=Math.random()*bg.width;
-    this.y=Math.random()*bg.height;
-    this.vx=-0.4-Math.random()*0.3;
-    this.size=2+Math.random()*2;
+  update() {
+    this.x -= this.speed;
+    if (this.x < 0) this.x = canvas.width;
   }
-  update(){
-    this.x+=this.vx;
-    if(this.x<0)this.x=bg.width;
-  }
-  draw(){
-    bctx.globalAlpha=0.25;
-    bctx.fillStyle="#ffcc00";
-    bctx.beginPath();
-    bctx.arc(this.x,this.y,this.size,0,Math.PI*2);
-    bctx.fill();
+
+  draw() {
+    ctx.fillStyle = "white";
+    ctx.globalAlpha = 0.6;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
   }
 }
 
-let stars=[], coinsBG=[];
-for(let i=0;i<80;i++) stars.push(new Star());
-for(let i=0;i<40;i++) coinsBG.push(new BGCoin());
-
-/* ===== FOREGROUND ===== */
-let particles=[];
-let combo=0;
-let lastClick=0;
-
-const streak=document.getElementById("streak");
-
-function floatText(x,y,val){
-  const el=document.createElement("div");
-  el.className="floatText";
-  el.innerText="+"+val;
-  el.style.left=x+"px";
-  el.style.top=y+"px";
-  document.body.appendChild(el);
-  setTimeout(()=>el.remove(),800);
-}
-
-class Coin{
-  constructor(x,y,strong=false){
-    this.x=x;
-    this.y=y;
-    let a=Math.random()*Math.PI*2;
-    let s=strong?10:5;
-    this.vx=Math.cos(a)*s;
-    this.vy=Math.sin(a)*s;
-    this.size=strong?5:3;
-    this.life=120;
-    this.value=strong?5:1;
-    this.rewarded=false;
+/* ===== FLOATING COIN ===== */
+class CoinBG {
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.speed = 0.5 + Math.random();
+    this.size = 2 + Math.random() * 2;
   }
 
-  update(){
-    const rect=document.getElementById("downloadBtn").getBoundingClientRect();
+  update() {
+    this.x -= this.speed;
+    if (this.x < 0) this.x = canvas.width;
+  }
 
-    let dx=(rect.left+rect.width/2)-this.x;
-    let dy=(rect.top+rect.height/2)-this.y;
+  draw() {
+    ctx.fillStyle = "#ffcc00";
+    ctx.globalAlpha = 0.25;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
 
-    this.vx+=dx*0.0008;
-    this.vy+=dy*0.0008;
+/* ===== EXPLOSION COIN ===== */
+class Coin {
+  constructor(x, y, strong) {
+    this.x = x;
+    this.y = y;
 
-    this.x+=this.vx;
-    this.y+=this.vy;
+    let a = Math.random() * Math.PI * 2;
+    let s = strong ? 8 : 4;
 
-    this.vx*=0.92;
-    this.vy*=0.92;
+    this.vx = Math.cos(a) * s;
+    this.vy = Math.sin(a) * s;
+
+    this.life = 100;
+    this.size = strong ? 5 : 3;
+  }
+
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+
+    this.vx *= 0.95;
+    this.vy *= 0.95;
 
     this.life--;
-
-    if(Math.hypot(dx,dy)<30 && !this.rewarded){
-      floatText(this.x,this.y,this.value);
-      this.rewarded=true;
-    }
   }
 
-  draw(){
-    fctx.fillStyle="#ffcc00";
-    fctx.shadowBlur=20;
-    fctx.shadowColor="#ffcc00";
-    fctx.beginPath();
-    fctx.arc(this.x,this.y,this.size,0,Math.PI*2);
-    fctx.fill();
+  draw() {
+    ctx.fillStyle = "#ffcc00";
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = "#ffcc00";
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
   }
 }
 
-/* ===== LOOP ===== */
-function animate(){
-  bctx.clearRect(0,0,bg.width,bg.height);
-  stars.forEach(s=>{s.update();s.draw();});
-  coinsBG.forEach(c=>{c.update();c.draw();});
+/* ===== INIT ===== */
+for (let i = 0; i < 80; i++) stars.push(new Star());
+for (let i = 0; i < 40; i++) coins.push(new CoinBG());
 
-  fctx.clearRect(0,0,fg.width,fg.height);
-  particles.forEach((p,i)=>{
-    p.update();
-    p.draw();
-    if(p.life<=0)particles.splice(i,1);
-  });
+/* ===== LOOP ===== */
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // background stars
+  for (let s of stars) {
+    s.update();
+    s.draw();
+  }
+
+  // floating coins
+  for (let c of coins) {
+    c.update();
+    c.draw();
+  }
+
+  // explosion particles
+  for (let i = particles.length - 1; i >= 0; i--) {
+    particles[i].update();
+    particles[i].draw();
+    if (particles[i].life <= 0) particles.splice(i, 1);
+  }
 
   requestAnimationFrame(animate);
 }
 animate();
 
-/* ===== COMBO SYSTEM ===== */
-function updateCombo(){
-  streak.style.display="block";
-  streak.innerText="COMBO x"+combo;
-
-  streak.classList.add("show");
-  if(combo>=3) streak.classList.add("power");
-  else streak.classList.remove("power");
+/* ===== COMBO ===== */
+function updateCombo() {
+  comboUI.innerText = "COMBO x" + combo;
+  comboUI.classList.add("show");
 
   clearTimeout(window.t);
-  window.t=setTimeout(()=>{
-    combo=0;
-    streak.classList.remove("show");
-    streak.classList.remove("power");
-  },1200);
+  window.t = setTimeout(() => {
+    combo = 0;
+    comboUI.classList.remove("show");
+  }, 1000);
 }
 
 /* ===== EXPLOSION ===== */
-function explode(x,y,strong=false){
-  let count=strong?60:25;
-  for(let i=0;i<count;i++){
-    particles.push(new Coin(x,y,strong));
+function explode(x, y, strong) {
+  let count = strong ? 40 : 18;
+
+  for (let i = 0; i < count; i++) {
+    particles.push(new Coin(x, y, strong));
   }
 }
 
 /* ===== CLICK ===== */
-function handle(x,y){
-  let now=Date.now();
-  combo=(now-lastClick<400)?combo+1:1;
-  lastClick=now;
+function handleClick(x, y) {
+  let now = Date.now();
+
+  combo = (now - lastClick < 400) ? combo + 1 : 1;
+  lastClick = now;
 
   updateCombo();
-  explode(x,y,combo>=3);
+  explode(x, y, combo >= 3);
 }
 
-window.addEventListener("click",e=>handle(e.clientX,e.clientY));
-window.addEventListener("touchstart",e=>{
-  let t=e.touches[0];
-  handle(t.clientX,t.clientY);
+/* ===== EVENTS ===== */
+window.addEventListener("click", e => handleClick(e.clientX, e.clientY));
+window.addEventListener("touchstart", e => {
+  let t = e.touches[0];
+  handleClick(t.clientX, t.clientY);
 });
 
-window.addEventListener("resize",()=>{
-  bg.width=fg.width=window.innerWidth;
-  bg.height=fg.height=window.innerHeight;
+/* resize */
+window.addEventListener("resize", () => {
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
 });
 </script>
 
