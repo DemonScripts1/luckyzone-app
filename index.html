@@ -10,270 +10,132 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: radial-gradient(circle at top, #0b0b0b, #000);
-  overflow: hidden;
   color: white;
+  overflow-x: hidden;
 }
 
-/* ===== CANVAS ===== */
-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 0;
-}
-
-/* ===== WELCOME SCREEN ===== */
-.intro {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at center, #000, #050505);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-  animation: fadeOut 2.8s ease forwards;
-  animation-delay: 2.5s;
-}
-
-.welcome-box {
-  text-align: center;
-  transform: scale(0);
-  animation: pop 1.2s ease forwards;
-}
-
-.welcome-title {
-  font-size: 55px;
-  color: #ffcc00;
-  text-shadow: 0 0 25px #ffcc00, 0 0 60px #ff9900;
-  margin-bottom: 10px;
-}
-
-.welcome-sub {
-  opacity: 0.7;
-  font-size: 16px;
-}
-
-@keyframes pop {
-  to { transform: scale(1); }
-}
-
-@keyframes fadeOut {
-  to { opacity: 0; visibility: hidden; }
-}
-
-/* ===== MAIN UI ===== */
+/* HEADER */
 header {
   text-align: center;
-  padding: 60px 20px;
-  position: relative;
-  z-index: 2;
+  padding: 60px 20px 40px;
 }
 
 h1 {
-  font-size: 52px;
+  font-size: 42px;
   color: #ffcc00;
-  text-shadow: 0 0 15px #ffcc00, 0 0 40px #ff9900;
+  text-shadow: 0 0 15px #ffcc00;
 }
 
 p {
   opacity: 0.75;
+  max-width: 500px;
+  margin: auto;
 }
 
+/* BUTTONS */
+.btn {
+  display: block;
+  width: 220px;
+  margin: 15px auto;
+  padding: 14px;
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+/* Primary */
+.btn-main {
+  background: linear-gradient(90deg, #ffcc00, #ff9900);
+  color: black;
+  box-shadow: 0 0 20px #ffcc00;
+}
+
+.btn-main:hover {
+  box-shadow: 0 0 40px #ffcc00;
+  transform: scale(1.05);
+}
+
+/* Secondary */
+.btn-alt {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,204,0,0.3);
+  color: #ffcc00;
+}
+
+.btn-alt:hover {
+  background: rgba(255,204,0,0.15);
+  transform: scale(1.05);
+}
+
+/* CARDS */
 .container {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 20px;
-  padding: 20px;
-  position: relative;
-  z-index: 2;
+  padding: 30px;
 }
 
 .card {
-  width: 260px;
+  width: 240px;
   padding: 20px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255, 204, 0, 0.25);
   border-radius: 15px;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 0 18px rgba(255, 204, 0, 0.15);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,204,0,0.2);
+  text-align: center;
   transition: 0.3s;
 }
 
 .card:hover {
-  transform: translateY(-6px) scale(1.05);
-  box-shadow: 0 0 35px rgba(255, 204, 0, 0.5);
+  transform: translateY(-6px);
+  box-shadow: 0 0 25px rgba(255,204,0,0.4);
 }
 
-.btn {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 12px 25px;
-  background: linear-gradient(90deg, #ffcc00, #ff9900);
-  color: black;
-  font-weight: bold;
-  border-radius: 10px;
-  text-decoration: none;
-  box-shadow: 0 0 25px #ffcc00;
+/* FOOTER */
+.footer {
+  text-align: center;
+  opacity: 0.5;
+  padding: 30px;
+  font-size: 13px;
 }
 
-.btn:hover {
-  box-shadow: 0 0 45px #ffcc00;
-}
-
-/* ===== 3D COINS (SMOOTHER) ===== */
-.coin {
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #fff7b0, #ffcc00, #996600);
-  box-shadow: 0 0 12px #ffcc00;
-  animation: float 7s infinite ease-in-out;
-  opacity: 0.9;
-  z-index: 1;
-}
-
-@keyframes float {
-  0%   { transform: translateY(0px) translateX(0px) scale(1); }
-  50%  { transform: translateY(-40px) translateX(15px) scale(1.2); }
-  100% { transform: translateY(0px) translateX(0px) scale(1); }
+/* MOBILE */
+@media(max-width:600px){
+  h1 { font-size: 32px; }
+  .card { width: 90%; }
 }
 </style>
 </head>
 
 <body>
 
-<!-- WELCOME SCREEN -->
-<div class="intro">
-  <div class="welcome-box">
-    <div class="welcome-title">Welcome</div>
-    <div class="welcome-sub">Lucky Zone Loading Experience</div>
-  </div>
-</div>
-
-<canvas id="particles"></canvas>
-
 <header>
   <h1>Lucky Zone</h1>
-  <p>Manage & transfer your funds with premium experience</p>
+  <p>Fast, simple and smooth mobile experience designed for ease of use.</p>
 
-  <a class="btn" href="https://github.com/TxDevelopers/luckyzone-app/releases/download/v1.0/Lucky.zone.apk">
-    Download App
+  <!-- PRIMARY BUTTON -->
+  <a class="btn btn-main"
+     href="https://github.com/TxDevelopers/luckyzone-app/releases/download/v1.0/Lucky.zone.apk">
+     Download App
+  </a>
+
+  <!-- SECONDARY BUTTON -->
+  <a class="btn btn-alt"
+     href="https://adsbazaar.net" target="_blank">
+     Open in Browser
   </a>
 </header>
 
 <div class="container">
-  <div class="card">Fast Transfers</div>
-  <div class="card">Secure System</div>
-  <div class="card">A Step into New Era</div>
+  <div class="card">⚡ Fast Performance</div>
+  <div class="card">🔒 Secure Access</div>
+  <div class="card">🎯 Easy to Use</div>
 </div>
 
-<!-- FLOATING COINS -->
-<div class="coin" style="top:20%;left:10%;animation-delay:0s;"></div>
-<div class="coin" style="top:35%;left:80%;animation-delay:1s;"></div>
-<div class="coin" style="top:60%;left:25%;animation-delay:2s;"></div>
-<div class="coin" style="top:70%;left:60%;animation-delay:3s;"></div>
-<div class="coin" style="top:45%;left:45%;animation-delay:4s;"></div>
-
-<script>
-const canvas = document.getElementById("particles");
-const ctx = canvas.getContext("2d");
-
-canvas.width = innerWidth;
-canvas.height = innerHeight;
-
-/* ===== SOFT PARTICLES (FIXED + SMOOTH) ===== */
-class Particle {
-  constructor() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.size = Math.random() * 1.8;
-    this.vx = (Math.random() - 0.5) * 0.4;
-    this.vy = (Math.random() - 0.5) * 0.4;
-  }
-
-  update() {
-    this.x += this.vx;
-    this.y += this.vy;
-
-    if (this.x < 0) this.x = canvas.width;
-    if (this.x > canvas.width) this.x = 0;
-    if (this.y < 0) this.y = canvas.height;
-    if (this.y > canvas.height) this.y = 0;
-  }
-
-  draw() {
-    ctx.fillStyle = "#ffcc00";
-    ctx.globalAlpha = 0.5;
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fill();
-  }
-}
-
-let particles = [];
-for (let i = 0; i < 90; i++) particles.push(new Particle());
-
-/* ===== SHOOTING STAR EFFECT ===== */
-class Star {
-  constructor() {
-    this.reset();
-  }
-
-  reset() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height * 0.5;
-    this.len = Math.random() * 80 + 50;
-    this.speed = Math.random() * 6 + 2;
-  }
-
-  update() {
-    this.x -= this.speed;
-    this.y += this.speed * 0.2;
-
-    if (this.x < -100) this.reset();
-  }
-
-  draw() {
-    ctx.strokeStyle = "rgba(255,255,255,0.5)";
-    ctx.beginPath();
-    ctx.moveTo(this.x, this.y);
-    ctx.lineTo(this.x + this.len, this.y - this.len * 0.3);
-    ctx.stroke();
-  }
-}
-
-let stars = [];
-for (let i = 0; i < 8; i++) stars.push(new Star());
-
-/* ===== LOOP ===== */
-function animate() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // particles
-  particles.forEach(p => {
-    p.update();
-    p.draw();
-  });
-
-  // stars
-  stars.forEach(s => {
-    s.update();
-    s.draw();
-  });
-
-  requestAnimationFrame(animate);
-}
-animate();
-
-/* resize */
-window.addEventListener("resize", () => {
-  canvas.width = innerWidth;
-  canvas.height = innerHeight;
-});
-</script>
+<div class="footer">
+  © 2026 Lucky Zone — All rights reserved
+</div>
 
 </body>
 </html>
