@@ -1,0 +1,23 @@
+{
+  "name": "luckyzone-app",
+  "version": "1.0.0",
+  "description": "LuckyZone Pakistan - Online Casino & Sports Betting Platform",
+  "private": true,
+  "scripts": {
+    "serve": "npx serve .",
+    "lint": "echo 'No linter configured for static HTML site'"
+  },
+  "dependencies": {
+    "@vercel/speed-insights": "^2.0.0"
+  },
+  "devDependencies": {
+    "serve": "^14.2.3"
+  },
+  "keywords": [
+    "casino",
+    "sports-betting",
+    "gaming"
+  ],
+  "author": "",
+  "license": "ISC"
+}
